@@ -45,12 +45,10 @@ Instructions
 Project layout
 -------------
 
-* `db.sqlite` - for development only. not tracked by git. created upon running `python manage.py syncdb`
-* `data.pdf` - some pixelation data results.
 * `manage.py` - comes with Django. Not modified.
 * `readme.md`
 * `sis/`
     * `settings.py` - the project-wide settings. should not need to be changed.
     * `templates/` - all the template files will go under here. there will be a directory for each app.
+    * `views/` - includes all views which are mapped with the urls patterns specifies in `urls.py`.
     * `urls.py` - includes all the urls.py files for each app (e.g. `correction/urls.py`) and maps the base url to the `home` view defined in `views.py`.
-    * `views.py` - includes all views which are mapped with the urls patterns specifies in `views.py`.
