@@ -1,0 +1,13 @@
+*.pyc
+*.png
+*.gif
+*.GIF
+*.jpeg
+*.jpg
+
+sis_env/
+
+!sis/images/*.jpg
+!sis/images/*.jpeg
+
+.DS_Store

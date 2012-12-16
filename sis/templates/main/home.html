@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>    
+ 		<title>SIS - Smart Image Serving</title>
+    	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>   
+  		<script>
+		    var segment_width = {{ segment_width }};
+	        var num_segmented_images= {{ num_segmented_images }};
+	        var segmented_images_paths = {{ segmented_images_paths|safe }};
+	        var pixelated_image_path = '{{ pixelated_img_path }}'; 
+	        var height = {{ height }};
+	        var width = {{ width }};
+	        var images = [];
+
+	       function loadImage2Step(){
+	            var img = new Image();
+	            img.src = pixelated_image_path;
+	            $(img).load(function(){            
+	      			var c = document.getElementById("myCanvas");
+					var ctx = c.getContext("2d");
+	               	ctx.drawImage(img, 0, 0);     
+	             	serialImageGet(0);
+	       		});  
+	     	}
+
+			function serialImageGet(index){
+			    var img = new Image();           
+				img.src = segmented_images_paths[index];      
+				images.push(img);       
+	 			$(img).load(function(){  
+	            	drawSegmentedImage(img, index);   
+	              	if(index < segmented_images_paths.length - 1){    
+	                 	serialImageGet(index + 1);     
+					}   
+				});   
+			}
+
+			function drawSegmentedImage(img, segment_number){
+			    var c = document.getElementById("myCanvas");    
+				var ctx =c.getContext("2d");          
+				for(var i=0; i<(width/num_segmented_images);i=i+segment_width){             
+					ctx.drawImage(img, i, 0, segment_width, height, (i*num_segmented_images)+(segment_number*segment_width), 0, segment_width, height);      
+				}
+			} 
+		</script>
+ 	</head>
+ 	<body onload="loadImage2Step()">
+    	<canvas id="myCanvas" width="{{ width }}" height="{{ height }}"></canvas>
+	</body>
+</html>
