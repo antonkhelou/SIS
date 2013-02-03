@@ -1,8 +1,11 @@
 from django.conf import settings
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 from PIL import Image
 
 from utils import *
+import json
 import os
 
 
@@ -41,3 +44,17 @@ def home(request):
     }
 
     return render(request, 'main/home.html', data)
+
+@csrf_exempt
+def upload_image(request):
+    print "here"
+    if request.method=='POST':
+        print "here3"
+        image = request.FILES['image']
+        image_filename = request.FILES['image'].name
+        pil_img = Image.open(image)
+
+        pil_img.save(os.path.join(os.path.join(settings.MEDIA_ROOT, "uploads"), image_filename))
+        
+        response_data={"success": "1"}
+        return HttpResponse(json.dumps(response_data), mimetype='application/json')
